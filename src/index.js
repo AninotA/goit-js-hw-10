@@ -13,10 +13,10 @@ searchCountry.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 function onSearch(e) {
   const nameCountry = e.target.value.trim();
 
-  if (!nameCountry) {
-    cleanHtml();
-    return;
-  }
+  // if (!nameCountry) {
+  //   cleanHtml();
+  //   return;
+  // }
 
   fetchCountries(nameCountry).then(data => {
     if (data.length > 10) {
@@ -48,16 +48,16 @@ function createListCountry(arr) {
 function createMarkupCountry(arr) {
   const markup = arr
     .map(({ name, flags, capital, population, languages }) => {
-      return `<li><img src="${flags.svg}" alt="Flag of ${
-        name.official
-      }" width="30" hight="20"><b>${name.official}</b></p>
+      return `<li><img src="${
+        flags.svg
+      }" alt="${name}" width="30" hight="20"><b>${name.official}</b></p>
             <p><b>Capital</b>: ${capital}</p>
             <p><b>Population</b>: ${population}</p>
             <p><b>Languages</b>: ${Object.values(languages)} </p>
                 </li>`;
     })
     .join('');
-  listCountry.innerHTML = markup;
+  infoCountry.innerHTML = markup;
 }
 
 function cleanHtml() {
