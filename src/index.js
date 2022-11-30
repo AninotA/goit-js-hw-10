@@ -13,23 +13,21 @@ searchCountry.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 function onSearch(e) {
   const nameCountry = e.target.value.trim();
 
-  if (!e.textContent) {
+  if (!nameCountry) {
     cleanHtml();
-
     return;
   }
 
-  fetchCountries(nameCountry)
-    .then(data => {
-      if (data.length > 10) {
-        manyMatchesFound(data);
-      } else if ((data.length <= 10) & (data.length > 1)) {
-        createList(data);
-      } else if ((data.length = 1)) {
-        createCard(data);
-      }
-    })
-    .catch(err => console.error(err));
+  fetchCountries(nameCountry).then(data => {
+    if (data.length > 10) {
+      manyMatchesFound(data);
+    } else if ((data.length < 10) & (data.length >= 2)) {
+      createListCountry(data);
+    } else if ((data.length = 1)) {
+      createMarkupCountry(data);
+    }
+  });
+  // .catch(err => console.error(err));
 }
 
 function manyMatchesFound() {
@@ -38,24 +36,24 @@ function manyMatchesFound() {
   );
 }
 
-function createList(countries) {
-  const markup = countries
-    .map(country => {
-      return `<li><img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="30" hight="20"><b>${country.name.official}</p></li>`;
+function createListCountry(arr) {
+  const markup = arr
+    .map(item => {
+      return `<li><img src="${item.flags.svg}" alt="Flag of ${item.name.official}" width="30" hight="20"><b>${item.name.official}</p></li>`;
     })
     .join('');
   listCountry.innerHTML = markup;
 }
 
-function createCard(countries) {
-  const markup = countries
-    .map(country => {
-      return `<li><img src="${country.flags.svg}" alt="Flag of ${
-        country.name.official
-      }" width="30" hight="20"><b>${country.name.official}</b></p>
-            <p><b>Capital</b>: ${country.capital}</p>
-            <p><b>Population</b>: ${country.population}</p>
-            <p><b>Languages</b>: ${Object.values(country.languages)} </p>
+function createMarkupCountry(arr) {
+  const markup = arr
+    .map(({ name, flags, capital, population, languages }) => {
+      return `<li><img src="${flags.svg}" alt="Flag of ${
+        name.official
+      }" width="30" hight="20"><b>${name.official}</b></p>
+            <p><b>Capital</b>: ${capital}</p>
+            <p><b>Population</b>: ${population}</p>
+            <p><b>Languages</b>: ${Object.values(languages)} </p>
                 </li>`;
     })
     .join('');
@@ -66,4 +64,3 @@ function cleanHtml() {
   listCountry.innerHTML = '';
   infoCountry.innerHTML = '';
 }
-
