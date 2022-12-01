@@ -12,35 +12,29 @@ body {
   line-height: 1.5;
 }
 
+
+
 #search-box {
   font: inherit;
   padding: 8px;
   max-width: 320px;
-  margin-bottom: 16px;
+  margin-bottom: 16px;  
+  border-color: blue;
+  border-radius: 4px;
 }
 
-/* .country-list {
+#search-box:hover,
+#search-box:focus {
+border-color: gold;
+}
+
+.country-list {
   list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
-  gap: 16px;
   flex-direction: column;
-}
-
-.country__item {
-  display: flex;
   gap: 16px;
-} */
-
-.info{
-
+  padding: 0;
+  
 }
 
-.title {
 
-}
-
-.flag {
-
-}
