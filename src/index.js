@@ -31,7 +31,11 @@ function onSearch(e) {
       createMarkupCountry(data);
     }
   })
-  .catch(err => console.error(err));
+  .catch(() => {
+    listCountry.innerHTML = '';
+    infoCountry.innerHTML = '';
+    Notiflix.Notify.failure('Oops, there is no country with that name');
+  });
 }
 
 function manyMatchesFound() {
