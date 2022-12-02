@@ -30,11 +30,20 @@ border-color: gold;
 
 .country-list {
   list-style: none;
+  text-size-adjust: 20;  
+  padding: 0;   
+}
+
+/* .country__item {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 0;
-  
-}
+} */
 
+.title {
+  /* display: flex;
+  flex-direction: column;
+  gap: 16px; */
+  font-size: 18px;
+}
 

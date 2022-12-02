@@ -1,15 +1,15 @@
 import './css/styles.css';
-import debounce from 'lodash.debounce';
 import { fetchCountries } from './fetchCountries';
+import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
-import 'notiflix/dist/notiflix-3.2.5.min.css';
 
+const input = document.querySelector('#search-box');
+const list = document.querySelector('.country-list');
+const info = document.querySelector('.country-info');
 const DEBOUNCE_DELAY = 300;
-const search = document.querySelector('#search-box');
-const list = document.querySelector('country-list');
-const info = document.querySelector('country-info');
 
-search.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
+
+input.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
 function onSearch(e) {
   let nameCountry = e.target.value.trim();
@@ -22,10 +22,12 @@ function onSearch(e) {
   fetchCountries(nameCountry)
     .then(data => {
       if (data.length > 10) {
-        list.innerHTML = '';
-        info.innerHTML = '';
+        // list.innerHTML = '';
+        // info.innerHTML = '';
         manyMatchesFound(data);
         return;
+      } else if (data.length === 0) {
+        Notiflix.Notify.failure('Oops, there is no country with that name');
       } else if (data.length <= 10 && data.length >= 2) {
         createListCountry(data);
       } else if (data.length === 1) {
@@ -41,13 +43,13 @@ function manyMatchesFound() {
   );
 }
 
-function createListCountry(country) {
-  return country
-    .map(
-      item =>
-        `<li class="country__item"><img src="${item.flags.svg}" alt="${item.name.official}" width="30" hight="20">${item.name.official}</li>`
-    )
+function createListCountry(countries) {
+  const markup = countries
+    .map(country => {
+      return `<li class="country__item"><img src="${country.flags.svg}" alt="${country.name.official}" width="40">${country.name.official}</li>`;
+    })
     .join('');
+  list.innerHTML = markup;
 }
 
 function createMarkupCountry(arr) {
@@ -55,7 +57,7 @@ function createMarkupCountry(arr) {
     .map(({ name, flags, capital, population, languages }) => {
       return `<div class="title"><img class="flag" src="${
         flags.svg
-      }" alt="${name}" width="70" /><p class="country">${
+      }" alt="${name}" width="100" /><p class="country">${
         name.official
       }</p></div>
             <p class="info"><span class="info">Capital: </span>${capital}</p>
@@ -65,7 +67,7 @@ function createMarkupCountry(arr) {
             )}</p>`;
     })
     .join('');
-  info.innerHTML = markup;
+  list.innerHTML = markup;
 }
 
 function cleanHtml() {
